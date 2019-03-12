@@ -12,4 +12,5 @@ app.get("/", function(req, res) {
 });
 
 app.listen(5000, function() {
+	console.log("testing")
 });
