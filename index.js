@@ -1,6 +1,6 @@
 var express  = require("express");
-
-var app = express();
+var app      = express();
+var port     = process.env.PORT || 8080;
 
 app.use(express.static("public"));
 
@@ -11,6 +11,6 @@ app.get("/", function(req, res) {
 	res.render("index");
 });
 
-app.listen(5000, function() {
-	console.log("testing")
+app.listen(port, function() {
+	console.log("port: " + port);
 });
