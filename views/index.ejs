@@ -1,11 +1,81 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="UTF-8">
 	<title>ATG Budget</title>
+
+	<script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-firestore.js"></script>
+	<script src="js/firebaseInit.js"></script>
+	<script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+	<link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
+	<script src="js/firebaseUI.js"></script>
+
+	<script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js" integrity="sha384-0pzryjIRos8mFBWMzSSZApWtPl/5++eIfzYmTgBBmXYdhvxPc+XcFEk+zJwDgWbP" crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="css/style.css">
+	<script src="js/script.js"></script>
+
+	<script>launchUI();</script>
 </head>
 <body>
-<h1>ATG Budget</h1>
-<div id="firebaseui-auth-container"></div>
-<div id="loader">Loading...</div>
+
+<sideBar>
+	<header>
+		<div class="logoImage"></div>
+		<h2>Save a Penny</h2>
+	</header>
+
+	<actions>
+		<action class="actionsHeader">
+			<h2>Budget</h2>
+			<i class="fas fa-caret-up"></i>
+		</action>
+		<action>
+			<i class="fas fa-dollar-sign"></i>
+			<h3>Expenses</h3>
+		</action>
+		<action>
+			<i class="fas fa-money-check"></i>
+			<h3>Income</h3>
+		</action>
+		<action>
+			<i class="fas fa-file-alt"></i>
+			<h3 onclick="viewItems();">Items</h3>
+		</action>
+		<action>
+			<i class="fas fa-file-invoice-dollar"></i>
+			<h3>Reports</h3>
+		</action>
+	</actions>
+
+	<footer>
+		<div id="sign-in-status" style="display: none"></div>
+		<div onclick="signOut();" id="sign-in"></div>
+	</footer>
+</sideBar>
+
+<mainContent id="mainContent">
+	<script src="js/firebaseGetUser.js"></script>
+
+	<header>
+		<h1>Welcome to Save a Penny!</h1>
+		<h3>~A Simpler Way to Budget~</h3>
+	</header>
+
+	<content>
+		<img src="images/screenshot.png">
+	</content>
+
+	<footer>
+		<h3>Get Started/Explanation Area</h3>
+		<p>Sign in to start.</p>
+		<div id="firebaseAuthHolder">
+			<div id="firebaseui-auth-container"></div>
+		</div>
+	</footer>
+</mainContent>
+
 </body>
 </html>

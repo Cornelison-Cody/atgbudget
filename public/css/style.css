@@ -1,0 +1,133 @@
+* {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  font-family: Georgia;
+}
+
+html {
+  height: 100%;
+  position: relative;
+}
+
+body {
+  background-color: floralwhite;
+  height: 100%;
+}
+
+sideBar {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 256px;
+  background-color: #00523d;
+  color: floralwhite;
+  height: 100%;
+}
+
+sideBar > header {
+  padding-left: 10px;
+  height: 50px;
+  border-bottom: floralwhite 1px solid;
+}
+
+sideBar > header > .logoImage {
+  float: left;
+  margin: 10px;
+  display: block;
+  height: 30px;
+  width: 30px;
+  background: url("../images/penny-bank-26086.svg");
+}
+
+sideBar > header > .logoImage:hover {
+  cursor: pointer;
+}
+
+sideBar > header > h2 {
+  margin-top: 10px;
+  font-size: 26px;
+}
+
+sideBar > actions {
+  background-color: #00412f;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-bottom: floralwhite 1px solid;
+}
+
+sideBar > actions > action {
+  margin: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  border-bottom: floralwhite 1px inset;
+}
+
+sideBar > actions > action:hover {
+  cursor: pointer;
+}
+
+sideBar > actions > .actionsHeader {
+  margin: 0;
+  border: none;
+}
+
+sideBar > footer {
+  width: 256px;
+  position: fixed;
+  bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+sideBar > footer > #sign-in-status {
+  margin-left: 5px;
+}
+
+sideBar > footer > #sign-in {
+  margin-right: 10px;
+}
+
+sideBar > footer > #sign-in:hover {
+  cursor: pointer;
+}
+
+mainContent {
+  margin-left: 256px;
+  display: flex;
+  flex-direction: column;
+}
+
+mainContent > header {
+  margin: 10px 0;
+  text-align: center;
+}
+
+mainContent > content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+mainContent > Footer {
+  text-align: center;
+  margin-top: 20px;
+}
+
+mainContent > footer #firebaseui-auth-container {
+  margin: 25px;
+}
+
+mainContent > footer .firebaseui-card-footer {
+  display: none;
+}
+
+mainContent > footer .firebaseui-idp-list {
+  margin-top: 0;
+}
