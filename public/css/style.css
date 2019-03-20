@@ -11,7 +11,7 @@ html {
 }
 
 body {
-  background-color: floralwhite;
+  background-color: #f5f5fa;
   height: 100%;
 }
 
@@ -22,14 +22,14 @@ sideBar {
   align-items: stretch;
   width: 256px;
   background-color: #00523d;
-  color: floralwhite;
+  color: #f5f5fa;
   height: 100%;
 }
 
 sideBar > header {
   padding-left: 10px;
   height: 50px;
-  border-bottom: floralwhite 1px solid;
+  border-bottom: #f5f5fa 1px solid;
 }
 
 sideBar > header > .logoImage {
@@ -52,28 +52,48 @@ sideBar > header > h2 {
 
 sideBar > actions {
   background-color: #00412f;
-  padding: 10px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  border-bottom: floralwhite 1px solid;
+  border-bottom: #f5f5fa 1px solid;
 }
 
 sideBar > actions > action {
-  margin: 5px;
-  display: flex;
+  padding: 5px;
+  display: none;
   flex-direction: row;
   align-items: stretch;
-  border-bottom: floralwhite 1px inset;
 }
 
 sideBar > actions > action:hover {
   cursor: pointer;
+  background-color: #00523d;
 }
 
 sideBar > actions > .actionsHeader {
-  margin: 0;
-  border: none;
+  padding: 10px 5px;
+  display: flex;
+  flex-direction: row;
+}
+
+sideBar > Actions > .actionsHeader >h2 {
+  margin-left: 15px;
+}
+
+sideBar > actions > .actionsHeader > svg {
+  margin-left: 120px;
+  align-self: center;
+}
+
+sideBar > actions > .Budget > svg {
+  margin-left: 15px;
+  width: 20px !important;
+}
+
+sideBar > actions > .Budget > h3 {
+  align-content: flex-start;
+  margin-top: -4px;
+  margin-left: 15px;
 }
 
 sideBar > footer {
@@ -86,20 +106,20 @@ sideBar > footer {
   align-items: center;
 }
 
-sideBar > footer > #sign-in-status {
+sideBar > footer > status {
   margin-left: 5px;
 }
 
-sideBar > footer > #sign-in {
+sideBar > footer > signOut {
   margin-right: 10px;
 }
 
-sideBar > footer > #sign-in:hover {
+sideBar > footer > signOut:hover {
   cursor: pointer;
+  color: #a3a3a8;
 }
 
 mainContent {
-  margin-left: 256px;
   display: flex;
   flex-direction: column;
 }

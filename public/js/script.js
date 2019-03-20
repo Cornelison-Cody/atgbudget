@@ -1,75 +1,34 @@
 function signOut() {
     firebase.auth().signOut().then(function() {
-        recreateSignIn();
-        launchUI();
+        initApp();
     }, function(error) {
         console.error('Sign Out Error', error);
     });
 }
 
-function recreateSignIn() {
-    let signInDivParent = document.getElementById('firebaseAuthHolder');
-    let signInDiv = document.getElementById('firebaseui-auth-container');
-    signInDivParent.removeChild(signInDiv);
+function toggleActionChildren(toggleClass, element) {
 
-    let newSignInDiv = document.createElement("div");
-    newSignInDiv.setAttribute("id", "firebaseui-auth-container");
-    signInDivParent.appendChild(newSignInDiv);
-}
+    if (element.lastElementChild.classList.contains("fa-caret-down")) {
+        element.lastElementChild.classList.add("fa-caret-up");
+    }
+    else {
+        element.lastElementChild.classList.add("fa-caret-down");
+    }
 
-function toggleChildren(element) {
-    // need to write function to hide actions in side menu bar
+    let children = document.getElementsByClassName(toggleClass);
+
+    for(let i = 0; i < children.length; i++) {
+        if (children[i].style.display === "flex") {
+            children[i].style.display = "none";
+        }
+        else {
+            children[i].style.display = "flex";
+        }
+    }
 }
 
 function showAddItem() {
 
-}
-
-function viewItems() {
-    clearMainContent();
-
-    let mainDiv            = document.getElementById('mainContent');
-    let itemHeaderDiv      = document.createElement("header");
-    let itemHeaderTitleDiv = document.createElement("h1");
-    let itemFooterDiv      = document.createElement("footer");
-    let itemFooterButton   = document.createElement("button");
-
-    itemHeaderTitleDiv.innerText = localStorage.getItem("name") + "'s Budget Items";
-    itemFooterButton.innerText   = "Add Item";
-    itemFooterButton.setAttribute("onclick", "showAddItem()");
-
-    itemHeaderDiv.appendChild(itemHeaderTitleDiv);
-    itemFooterDiv.appendChild(itemFooterButton);
-
-    let itemContentDiv = document.createElement("content");
-    let myItems = getItems();
-
-    for (let i = 0; i < myItems.length; i++) {
-        let itemDiv        = document.createElement("item");
-        let itemNameDiv    = document.createElement("h2");
-        let itemBalanceDiv = document.createElement("h3");
-
-        itemNameDiv.innerText    = myItems[i].name;
-        itemBalanceDiv.innerText = myItems[i].balance.toString();
-
-        itemDiv.appendChild(itemNameDiv);
-        itemDiv.appendChild(itemBalanceDiv);
-
-        itemContentDiv.appendChild(itemDiv);
-    }
-
-    mainDiv.appendChild(itemHeaderDiv);
-    mainDiv.appendChild(itemContentDiv);
-    mainDiv.appendChild(itemFooterDiv);
-}
-
-function clearMainContent() {
-    let mainDiv = document.getElementById('mainContent');
-
-    let childrenArray = Array.from(mainDiv.childNodes);
-    childrenArray.forEach(function (childDiv) {
-        childDiv.parentNode.removeChild(childDiv);
-    })
 }
 
 function getItems() {

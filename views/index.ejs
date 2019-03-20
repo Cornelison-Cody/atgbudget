@@ -16,66 +16,12 @@
 
 	<link rel="stylesheet" href="css/style.css">
 	<script src="js/script.js"></script>
+	<script src="js/ui.js"></script>
 
-	<script>launchUI();</script>
-</head>
-<body>
-
-<sideBar>
-	<header>
-		<div class="logoImage"></div>
-		<h2>Save a Penny</h2>
-	</header>
-
-	<actions>
-		<action class="actionsHeader">
-			<h2>Budget</h2>
-			<i class="fas fa-caret-up"></i>
-		</action>
-		<action>
-			<i class="fas fa-dollar-sign"></i>
-			<h3>Expenses</h3>
-		</action>
-		<action>
-			<i class="fas fa-money-check"></i>
-			<h3>Income</h3>
-		</action>
-		<action>
-			<i class="fas fa-file-alt"></i>
-			<h3 onclick="viewItems();">Items</h3>
-		</action>
-		<action>
-			<i class="fas fa-file-invoice-dollar"></i>
-			<h3>Reports</h3>
-		</action>
-	</actions>
-
-	<footer>
-		<div id="sign-in-status" style="display: none"></div>
-		<div onclick="signOut();" id="sign-in"></div>
-	</footer>
-</sideBar>
-
-<mainContent id="mainContent">
 	<script src="js/firebaseGetUser.js"></script>
 
-	<header>
-		<h1>Welcome to Save a Penny!</h1>
-		<h3>~A Simpler Way to Budget~</h3>
-	</header>
-
-	<content>
-		<img src="images/screenshot.png">
-	</content>
-
-	<footer>
-		<h3>Get Started/Explanation Area</h3>
-		<p>Sign in to start.</p>
-		<div id="firebaseAuthHolder">
-			<div id="firebaseui-auth-container"></div>
-		</div>
-	</footer>
-</mainContent>
-
+</head>
+<body>
+<mainContent id="mainContent"></mainContent>
 </body>
 </html>
