@@ -7,16 +7,85 @@ const firestore = new Firestore({
     keyFilename: 'atgbudget-c99491099a34.json'
 });
 
-exports.addItem = function(uid, itemName, res) {
+exports.addItem = function(uid, itemName, itemAmount, res) {
     const document = firestore.doc('budgets/' + uid + '/items/' +itemName);
-    document.set({
-        name: itemName,
-        category: '',
-        balance: 0,
-        active: true
+    document.get().then(docSnapshot => {
+        if(!docSnapshot.exists) {
+            document.set({
+                name: itemName,
+                category: '',
+                balance: itemAmount,
+                active: true
+            });
+            const documentTotal = firestore.doc('budgets/' + uid + '/items/budgetTotal');
+            documentTotal.get().then( doc => {
+                if(doc.exists) {
+                    let budgetTotal  = doc.data();
+                    let budgetAmount = budgetTotal.amount;
+
+                    documentTotal.set({
+                        amount: budgetAmount + itemAmount
+                    });
+                }
+                else {
+                    documentTotal.set({
+                        amount: 0
+                    })
+                }
+            });
+        }
     });
     res.writeHead(200, {"Content-type": "application/json"});
     res.write(JSON.stringify({result: itemName + " added successfully"}));
+    res.end();
+};
+
+exports.addExpense = function(uid, itemName, expenseAmount, expenseDescription, res) {
+    let today = new Date();
+    firestore.collection('budgets/' + uid + '/expenses')
+        .add({
+        name: itemName,
+        category: '',
+        amount: expenseAmount,
+        description: expenseDescription,
+        date: today.toDateString(),
+        active: true
+    });
+
+    const itemDoc = firestore.doc('budgets/' + uid + '/items/' +itemName);
+    itemDoc.get().then(docSnapshot => {
+        if(docSnapshot.exists) {
+            let itemData = docSnapshot.data();
+            let itemBalance = itemData.balance;
+            let itemCategory = itemData.category;
+
+            itemDoc.set({
+                name: itemName,
+                category: itemCategory,
+                balance: itemBalance - expenseAmount,
+                active: true
+            });
+        }
+
+        const documentTotal = firestore.doc('budgets/' + uid + '/items/budgetTotal');
+        documentTotal.get().then( doc => {
+            if(doc.exists) {
+                let budgetTotal  = doc.data();
+                let budgetAmount = budgetTotal.amount;
+
+                documentTotal.set({
+                    amount: budgetAmount - expenseAmount
+                });
+            }
+            else {
+                documentTotal.set({
+                    amount: 0
+                })
+            }
+        });
+    });
+    res.writeHead(200, {"Content-type": "application/json"});
+    res.write(JSON.stringify({result: itemName + " expense successful"}));
     res.end();
 };
 
@@ -40,8 +109,33 @@ exports.getItem = function(uid, itemName, res) {
 };
 
 exports.getItems = function(uid, res) {
-    var userData = [];
+    let userData = [];
     const userDocs = firestore.collection('budgets/' + uid + '/items');
+    let query = userDocs.where('active', '==', true).get()
+        .then(snapshot => {
+            if (snapshot.empty) {
+                res.writeHead(404, {"Content-type": "application/text"});
+                res.write("No items found");
+                res.end();
+                return;
+            }
+
+            snapshot.forEach(doc => {
+                userData.push(doc.data());
+
+            });
+            res.writeHead(200, {"Content-type": "application/json"});
+            res.write(JSON.stringify(userData));
+            res.end();
+        })
+        .catch(err => {
+            console.log('Error getting documents', err);
+        });
+};
+
+exports.getExpenses = function(uid, res) {
+    let userData = [];
+    const userDocs = firestore.collection('budgets/' + uid + '/expenses');
     let query = userDocs.where('active', '==', true).get()
         .then(snapshot => {
             if (snapshot.empty) {

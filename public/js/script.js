@@ -27,24 +27,30 @@ function toggleActionChildren(toggleClass, element) {
     }
 }
 
-function showAddItem() {
-
-}
-
 function getItems() {
     const xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "/budget/items?uid=" + localStorage.getItem("uid"), false);
+    xhttp.open("GET", "/budget/items?function=getItems&uid=" + localStorage.getItem("uid"), false);
     xhttp.send(null);
     return JSON.parse(xhttp.responseText);
 }
 
-// function getItem() {
-//     const xhttp = new XMLHttpRequest();
-//     xhttp.onreadystatechange = function() {
-//         if (this.readyState == 4 && this.status == 200) {
-//             document.getElementById("person").innerHTML = this.responseText;
-//         }
-//     };
-//     xhttp.open("GET", "/services/getPerson?id=" + document.getElementById('id').value, true);
-//     xhttp.send();
-// }
+function getExpenses() {
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "/budget/items?function=getExpenses&uid=" + localStorage.getItem("uid"), false);
+    xhttp.send(null);
+    return JSON.parse(xhttp.responseText);
+}
+
+function addItem(name) {
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "/budget/items?uid=" + localStorage.getItem("uid") + "&function=addItem&name=" + name + "&amount=" + 0, false);
+    xhttp.send(null);
+    return JSON.parse(xhttp.responseText);
+}
+
+function addExpense(name, amount, description) {
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "/budget/items?uid=" + localStorage.getItem("uid") + "&function=addExpense&name=" + name + "&amount=" + amount + "&description=" + description, false);
+    xhttp.send(null);
+    return JSON.parse(xhttp.responseText);
+}

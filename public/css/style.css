@@ -15,6 +15,9 @@ body {
   height: 100%;
 }
 
+/******************
+**Side bar styles**
+******************/
 sideBar {
   position: fixed;
   display: flex;
@@ -119,25 +122,34 @@ sideBar > footer > signOut:hover {
   color: #a3a3a8;
 }
 
+/************************
+ MainContent Home screen
+*************************/
 mainContent {
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 mainContent > header {
-  margin: 10px 0;
+  padding: 31px 0;
   text-align: center;
+  background-color: #a7bacb;
 }
 
 mainContent > content {
+  width: 75%;
+  margin-left: 12.5%;
+  margin-top: 50px;
   display: flex;
   flex-direction: row;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 mainContent > Footer {
   text-align: center;
-  margin-top: 20px;
+  margin-top: 75px;
 }
 
 mainContent > footer #firebaseui-auth-container {
@@ -150,4 +162,152 @@ mainContent > footer .firebaseui-card-footer {
 
 mainContent > footer .firebaseui-idp-list {
   margin-top: 0;
+}
+
+/******************
+ Items View
+******************/
+mainContent > content > item {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  margin: 25px;
+  min-width: 240px;
+  min-height: 100px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+mainContent > content > item:hover {
+  box-shadow: 0 8px 16px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+mainContent > content > item > h2{
+  padding: 20px 10px;
+  background-color: #a7bacb;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+mainContent > content > item > h3{
+  padding: 20px 30px;
+  font-size: x-large;
+  font-weight: normal;
+  font-family: Consolas;
+}
+
+mainContent > footer > button {
+  padding: 15px;
+  font-size: large;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+mainContent > footer > button:hover {
+  box-shadow: 0 8px 16px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  cursor: pointer;
+}
+
+/******************
+ Item Popup Style
+******************/
+::placeholder {
+  text-align: center;
+}
+
+mainContent > popup {
+  background-color: #f5f5fa;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -72px;
+  margin-top: -150px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  min-height: 200px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  text-align: center;
+  border-radius: 5px;
+}
+
+mainContent > popup > header {
+  padding: 30px 0;
+  background-color: #a7bacb;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+mainContent > popup > content {
+  margin: 30px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
+mainContent > popup > content > input {
+  margin: 10px;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+mainContent > popup > content > button {
+  margin: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+mainContent > popup > content > button:hover {
+  box-shadow: 0 8px 16px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  cursor: pointer;
+}
+
+/******************
+ Expense Popup Style
+******************/
+mainContent > popup > content > select {
+  padding: 10px;
+  margin: 10px;
+  width: 190px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+/******************
+ Expense page Style
+******************/
+
+mainContent > content > expenses {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  border-radius: 5px;
+}
+
+mainContent > content > expenses > #expenseHeader {
+  background-color: #a7bacb;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+mainContent > content > expenses > row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding: 15px;
+  justify-content: space-evenly;
+}
+
+mainContent > content > expenses > row > div {
+
 }

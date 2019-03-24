@@ -13,15 +13,32 @@ app.get("/", function(req, res) {
 });
 
 app.post("/budget/items", (req, res) => {
-	firebaseDB.addItem(req.query.uid, req.query.itemName, res);
+	if(req.query.function === "addItem") {
+		firebaseDB.addItem(req.query.uid, req.query.name, Number(req.query.amount), res);
+	}
+	else if (req.query.function === "addExpense") {
+		firebaseDB.addExpense(req.query.uid, req.query.name, Number(req.query.amount), req.query.description, res)
+	}
+	else {
+		console.log(req.query.function);
+	}
+
 });
 
 app.get("/budget/items", (req, res) => {
-	if(req.query.itemName) {
-		firebaseDB.getItem(req.query.uid, req.query.itemName, res);
+	if(req.query.function === "getItems") {
+		if(req.query.itemName) {
+			firebaseDB.getItem(req.query.uid, req.query.itemName, res);
+		}
+		else {
+			firebaseDB.getItems(req.query.uid, res);
+		}
+	}
+	else if (req.query.function === "getExpenses") {
+		firebaseDB.getExpenses(req.query.uid, res);
 	}
 	else {
-		firebaseDB.getItems(req.query.uid, res);
+		console.log(req.query.function);
 	}
 });
 
