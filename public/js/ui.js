@@ -4,34 +4,45 @@ function buildHomeScreen() {
     let headerTitleDiv = document.createElement("h1");
     let headerSubDiv   = document.createElement("h3");
     let contentDiv     = document.createElement("content");
-    let contentImgDiv  = document.createElement("img");
+    let videoDiv       = document.createElement("video");
+    let ctaTitleDiv    = document.createElement("h1");
+    let overlayDiv     = document.createElement("overlay");
+    let authDiv        = document.createElement("auth");
+    let authContainer  = document.createElement("div");
     let footerDiv      = document.createElement("footer");
-    let footerTitleDiv = document.createElement("h3");
+    let footerTitleDiv = document.createElement("h2");
     let footerTextDiv  = document.createElement("p");
-    let footerAuthDiv  = document.createElement("div");
-    let footerAuthCont = document.createElement("div");
 
-    headerTitleDiv.innerText = "Welcome to Save a Penny!";
-    headerSubDiv.innerText   = "~A Simpler Way to Budget";
+    headerTitleDiv.innerText = "Save a Penny";
+    headerSubDiv.innerText   = "A Simpler Way to Budget";
 
-    contentImgDiv.setAttribute("src", "images/screenshot.png");
+    videoDiv.setAttribute("src", "images/background.mp4");
+    videoDiv.setAttribute("autoplay", "");
+    videoDiv.setAttribute("muted", "");
+    videoDiv.setAttribute("loop", "");
+    videoDiv.setAttribute("poster", "images/screenshot.png");
 
-    footerTitleDiv.innerText = "Get Started/Explanation Area";
-    footerTextDiv.innerText  = "Sign in to start"
+    ctaTitleDiv.innerText = "Start saving today";
 
-    footerAuthDiv.setAttribute("id", "firebaseAuthHolder");
-    footerAuthCont.setAttribute("id", "firebaseui-auth-container");
+    authDiv.setAttribute("id", "firebaseAuthHolder");
+    authContainer.setAttribute("id", "firebaseui-auth-container");
 
-    footerAuthDiv.appendChild(footerAuthCont);
+    footerTitleDiv.innerText = "Explanation Area";
+    footerTextDiv.innerText  = "Story/history/instructions";
+
+    authDiv.appendChild(authContainer);
+
+    overlayDiv.appendChild(ctaTitleDiv);
+    overlayDiv.appendChild(authDiv);
 
     headerDiv.appendChild(headerTitleDiv);
     headerDiv.appendChild(headerSubDiv);
 
-    contentDiv.appendChild(contentImgDiv);
+    contentDiv.appendChild(videoDiv);
+    contentDiv.appendChild(overlayDiv);
 
     footerDiv.appendChild(footerTitleDiv);
     footerDiv.appendChild(footerTextDiv);
-    footerDiv.appendChild(footerAuthDiv);
 
     mainDiv.appendChild(headerDiv);
     mainDiv.appendChild(contentDiv);
@@ -71,11 +82,17 @@ function buildSideBarHeader() {
 function buildActions() {
     let actionsDiv = document.createElement("actions");
 
-    actionsDiv.appendChild(buildActionHeader("Budget"));
-    actionsDiv.appendChild(buildActionItem("Expenses", "fa-dollar-sign", "Budget"));
-    actionsDiv.appendChild(buildActionItem("Income", "fa-money-check", "Budget"));
-    actionsDiv.appendChild(buildActionItem("Items", "fa-file-alt", "Budget"));
-    actionsDiv.appendChild(buildActionItem("Reports", "fa-file-invoice-dollar", "Budget"));
+    actionsDiv.appendChild(buildActionHeader("Items"));
+    actionsDiv.appendChild(buildActionItem("View Items", "fa-folder-open", "Items", "viewItems();"));
+    actionsDiv.appendChild(buildActionItem("Add Item", "fa-file-alt", "Items", "popupAddItem();"));
+
+    actionsDiv.appendChild(buildActionHeader("Expenses"));
+    actionsDiv.appendChild(buildActionItem("View Expenses", "fa-folder-open", "Expenses", "viewExpenses();"));
+    actionsDiv.appendChild(buildActionItem("Add Expense", "fa-dollar-sign", "Expenses", "popupAddExpense();"));
+
+    actionsDiv.appendChild(buildActionHeader("Income"));
+    actionsDiv.appendChild(buildActionItem("View Income", "fa-folder-open", "Income", "viewIncome();"));
+    actionsDiv.appendChild(buildActionItem("Add Income", "fa-money-check", "Income", "addIncome();"));
 
     return actionsDiv;
 
@@ -100,19 +117,20 @@ function buildActionHeader(group) {
     return actionDiv;
 }
 
-function buildActionItem(title, icon, group) {
+function buildActionItem(title, icon, group, action) {
     let actionDiv = document.createElement("action");
     let iconDiv   = document.createElement("i");
     let titleDiv  = document.createElement("h3");
 
     actionDiv.classList.add(group);
+    actionDiv.classList.add("actionItem");
 
     iconDiv.classList.add("fas");
     iconDiv.classList.add(icon);
 
     titleDiv.innerText = title;
 
-    actionDiv.setAttribute("onclick", "view" + title + "();")
+    actionDiv.setAttribute("onclick", action)
 
     actionDiv.appendChild(iconDiv);
     actionDiv.appendChild(titleDiv);
@@ -143,6 +161,7 @@ function clearSideBar() {
     if (sideBarDiv[0]) {
         document.body.removeChild(sideBarDiv[0]);
     }
+
     mainDiv.style.marginLeft = "0px";
 }
 
@@ -159,6 +178,8 @@ function viewItems() {
     HeaderTitleDiv.innerText = localStorage.getItem("name") + "'s Budget Items";
     FooterButton.innerText   = "Add Item";
     FooterButton.setAttribute("onclick", "popupAddItem()");
+
+    ContentDiv.classList.add("spacing-top");
 
     HeaderDiv.appendChild(HeaderTitleDiv);
     FooterDiv.appendChild(FooterButton);
@@ -199,6 +220,8 @@ function viewExpenses() {
 
     HeaderDiv.appendChild(HeaderTitleDiv);
     FooterDiv.appendChild(FooterButton);
+
+    ContentDiv.classList.add("spacing-top");
 
     let tableHeader = buildExpenseRow("Item", "Date", "Amount", "Description");
     tableHeader.setAttribute("id","expenseHeader");
@@ -377,17 +400,19 @@ function hidePopup() {
 
     if (popupDivs[0]) {
         mainDiv.removeAttribute("onclick");
-        mainDiv.removeChild(popupDivs[0]);
+        while (popupDivs[0]) {
+            mainDiv.removeChild(popupDivs[0]);
+        }
     }
 }
 
 function popupAddItem() {
-    toggleBlurChildren("mainContent");
+    blurChildren("mainContent");
     showAddItem();
 }
 
 function popupAddExpense(itemName) {
-    toggleBlurChildren("mainContent");
+    blurChildren("mainContent");
     showAddExpense(itemName);
 }
 
@@ -396,14 +421,14 @@ function cancelPopup() {
     if (event.srcElement === mainDiv[0] || event.srcElement === mainDiv[0].childNodes[0] ||
         event.srcElement === mainDiv[0].childNodes[1] || event.srcElement === mainDiv[0].childNodes[2] ) {
         hidePopup();
-        toggleBlurChildren("mainContent");
+        unBlurChildren("mainContent");
     }
 }
 
 function submitNewItem(name) {
     hidePopup();
     addItem(name);
-    toggleBlurChildren("mainContent");
+    unBlurChildren("mainContent");
 
     let contentDivs = document.getElementsByTagName("content");
     contentDivs[0].appendChild(buildBudgetItem(name, 0));
@@ -412,7 +437,7 @@ function submitNewItem(name) {
 function submitNewExpense(name, amount, description) {
     hidePopup();
     addExpense(name, amount, description);
-    toggleBlurChildren("mainContent");
+    unBlurChildren("mainContent");
 
     let today = new Date();
     let expenseTable = document.getElementsByTagName("expenses");
@@ -428,15 +453,18 @@ function clearMainContent() {
     })
 }
 
-function toggleBlurChildren(elementID) {
+function blurChildren(elementID) {
     let div  = document.getElementById(elementID);
     let divs = div.childNodes;
     for (let i = 0; i < divs.length; i++) {
-        if (divs[i].style.filter === "blur(2px)") {
-            divs[i].style.filter = "blur(0px)";
-        }
-        else {
-            divs[i].style.filter = "blur(2px)";
-        }
+        divs[i].style.filter = "blur(2px)";
+    }
+}
+
+function unBlurChildren(elementID) {
+    let div  = document.getElementById(elementID);
+    let divs = div.childNodes;
+    for (let i = 0; i < divs.length; i++) {
+        divs[i].style.filter = "blur(0px)";
     }
 }

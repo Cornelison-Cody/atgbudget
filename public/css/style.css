@@ -74,9 +74,11 @@ sideBar > actions > action:hover {
 }
 
 sideBar > actions > .actionsHeader {
+  position: relative;
   padding: 10px 5px;
   display: flex;
   flex-direction: row;
+  border-top: #f5f5fa solid 1px;
 }
 
 sideBar > Actions > .actionsHeader >h2 {
@@ -84,16 +86,17 @@ sideBar > Actions > .actionsHeader >h2 {
 }
 
 sideBar > actions > .actionsHeader > svg {
-  margin-left: 120px;
+  position: absolute;
+  right: 25px;
   align-self: center;
 }
 
-sideBar > actions > .Budget > svg {
+sideBar > actions > .actionItem > svg {
   margin-left: 15px;
   width: 20px !important;
 }
 
-sideBar > actions > .Budget > h3 {
+sideBar > actions > .actionItem > h3 {
   align-content: flex-start;
   margin-top: -4px;
   margin-left: 15px;
@@ -138,13 +141,37 @@ mainContent > header {
 }
 
 mainContent > content {
-  width: 75%;
-  margin-left: 12.5%;
-  margin-top: 50px;
+  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: center;
   flex-wrap: wrap;
+}
+
+mainContent > content > video {
+  width: 100%;
+  object-fit: cover;
+  height: 500px;
+}
+
+@media only screen and (min-width: 1280px) {
+  mainContent > content > video {
+    object-fit: fill;
+  }
+}
+
+mainContent > content > overlay {
+  position: absolute;
+  top: 0px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
 }
 
 mainContent > Footer {
@@ -152,16 +179,16 @@ mainContent > Footer {
   margin-top: 75px;
 }
 
-mainContent > footer #firebaseui-auth-container {
-  margin: 25px;
+mainContent > content #firebaseui-auth-container {
+  margin-top: 25px;
 }
 
-mainContent > footer .firebaseui-card-footer {
+mainContent > content .firebaseui-card-footer {
   display: none;
 }
 
-mainContent > footer .firebaseui-idp-list {
-  margin-top: 0;
+mainContent > content .firebaseui-idp-list {
+  /*margin-top: 0;*/
 }
 
 /******************
@@ -310,4 +337,10 @@ mainContent > content > expenses > row {
 
 mainContent > content > expenses > row > div {
 
+}
+
+.spacing-top {
+  width: 75%;
+  margin-left: 12.5%;
+  margin-top: 50px;
 }

@@ -17,7 +17,7 @@ app.post("/budget/items", (req, res) => {
 		firebaseDB.addItem(req.query.uid, req.query.name, Number(req.query.amount), res);
 	}
 	else if (req.query.function === "addExpense") {
-		firebaseDB.addExpense(req.query.uid, req.query.name, Number(req.query.amount), req.query.description, res)
+		firebaseDB.addExpense(req.query.uid, req.query.name, Number(req.query.amount), req.query.description, res);
 	}
 	else {
 		console.log(req.query.function);
