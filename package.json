@@ -17,7 +17,8 @@
     "firebase": "^5.8.6",
     "firebase-admin": "^7.0.0",
     "firebaseui": "^3.5.2",
-    "mathjs": "^5.6.0"
+    "mathjs": "^5.6.0",
+    "body-parser": "latest"
   },
   "devDependencies": {
     "@types/express": "^4.16.1",

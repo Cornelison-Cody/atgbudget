@@ -1,3 +1,6 @@
+/****************************
+      Home Page Functions
+ ****************************/
 function buildHomeScreen() {
     let mainDiv        = document.getElementById("mainContent");
     let headerDiv      = document.createElement("header");
@@ -51,6 +54,18 @@ function buildHomeScreen() {
     launchUI();
 }
 
+function clearMainContent() {
+    let mainDiv = document.getElementById('mainContent');
+
+    let childrenArray = Array.from(mainDiv.childNodes);
+    childrenArray.forEach(function (childDiv) {
+        childDiv.parentNode.removeChild(childDiv);
+    })
+}
+
+/****************************
+      Side Bar Functions
+ ****************************/
 function buildSidebar(displayName) {
     let mainDiv    = document.getElementById("mainContent");
     let sidebarDiv = document.createElement("sideBar");
@@ -165,90 +180,9 @@ function clearSideBar() {
     mainDiv.style.marginLeft = "0px";
 }
 
-function viewItems() {
-    clearMainContent();
-
-    let mainDiv        = document.getElementById('mainContent');
-    let HeaderDiv      = document.createElement("header");
-    let HeaderTitleDiv = document.createElement("h1");
-    let ContentDiv     = document.createElement("content");
-    let FooterDiv      = document.createElement("footer");
-    let FooterButton   = document.createElement("button");
-
-    HeaderTitleDiv.innerText = localStorage.getItem("name") + "'s Budget Items";
-    FooterButton.innerText   = "Add Item";
-    FooterButton.setAttribute("onclick", "popupAddItem()");
-
-    ContentDiv.classList.add("spacing-top");
-
-    HeaderDiv.appendChild(HeaderTitleDiv);
-    FooterDiv.appendChild(FooterButton);
-
-    let myItems;
-
-    try {
-        myItems = getItems();
-    }
-    catch(err) {
-    }
-
-    if(myItems){
-        for (let i = 0; i < myItems.length; i++) {
-            ContentDiv.appendChild(buildBudgetItem(myItems[i].name, myItems[i].balance));
-        }
-    }
-
-    mainDiv.appendChild(HeaderDiv);
-    mainDiv.appendChild(ContentDiv);
-    mainDiv.appendChild(FooterDiv);
-}
-
-function viewExpenses() {
-    clearMainContent();
-
-    let mainDiv        = document.getElementById('mainContent');
-    let HeaderDiv      = document.createElement("header");
-    let HeaderTitleDiv = document.createElement("h1");
-    let ContentDiv     = document.createElement("content");
-    let expensesDiv    = document.createElement("expenses");
-    let FooterDiv      = document.createElement("footer");
-    let FooterButton   = document.createElement("button");
-
-    HeaderTitleDiv.innerText = localStorage.getItem("name") + "'s Expenses";
-    FooterButton.innerText   = "Add Expense";
-    FooterButton.setAttribute("onclick", "popupAddExpense('')");
-
-    HeaderDiv.appendChild(HeaderTitleDiv);
-    FooterDiv.appendChild(FooterButton);
-
-    ContentDiv.classList.add("spacing-top");
-
-    let tableHeader = buildExpenseRow("Item", "Date", "Amount", "Description");
-    tableHeader.setAttribute("id","expenseHeader");
-
-    expensesDiv.appendChild(tableHeader);
-
-    let myItems;
-
-    try {
-        myItems = getExpenses();
-    }
-    catch(err) {
-    }
-
-    if(myItems){
-        for (let i = 0; i < myItems.length; i++) {
-            expensesDiv.appendChild(buildExpenseRow(myItems[i].name, myItems[i].date, myItems[i].amount, myItems[i].description));
-        }
-    }
-
-    ContentDiv.appendChild(expensesDiv);
-
-    mainDiv.appendChild(HeaderDiv);
-    mainDiv.appendChild(ContentDiv);
-    mainDiv.appendChild(FooterDiv);
-}
-
+/****************************
+       Expense Functions
+ ****************************/
 function buildExpenseRow(name, date, amount, description) {
     let rowDiv         = document.createElement("row");
     let nameDiv        = document.createElement("div");
@@ -269,6 +203,20 @@ function buildExpenseRow(name, date, amount, description) {
     return rowDiv;
 }
 
+function submitNewExpense(name, amount, description, fromExpense) {
+    hidePopup();
+    addExpense(name, amount, description);
+    unBlurChildren("mainContent");
+    if (fromExpense) {
+        let today = new Date();
+        let expenseTable = document.getElementsByTagName("expenses");
+        expenseTable[0].appendChild(buildExpenseRow(name, today.toDateString(), amount, description));
+    }
+}
+
+/****************************
+        Item Functions
+ ****************************/
 function buildBudgetItem(name, amount) {
     let itemDiv    = document.createElement("item");
     let NameDiv    = document.createElement("h2");
@@ -286,114 +234,18 @@ function buildBudgetItem(name, amount) {
     return itemDiv;
 }
 
-function showAddItem() {
-    let mainDiv    = document.getElementById("mainContent");
-    let popupDiv   = document.createElement("popup");
-    let headerDiv  = document.createElement("header");
-    let titleDiv   = document.createElement("h2");
-    let contentDiv = document.createElement("content");
-    let inputDiv   = document.createElement("input");
-    let buttonDiv  = document.createElement("button");
+function submitNewItem(name) {
+    hidePopup();
+    addItem(name);
+    unBlurChildren("mainContent");
 
-    titleDiv.innerText  = "Add a New Item";
-    buttonDiv.innerText = "Add Item";
-
-    inputDiv.setAttribute("type", "text");
-    inputDiv.setAttribute("id", "name");
-    inputDiv.setAttribute("placeholder", "Item Title");
-
-    buttonDiv.setAttribute("type", "button");
-    buttonDiv.setAttribute("onclick", "submitNewItem(document.getElementById('name').value)");
-
-    headerDiv.appendChild(titleDiv);
-    contentDiv.appendChild(inputDiv);
-    contentDiv.appendChild(buttonDiv);
-
-    popupDiv.appendChild(headerDiv);
-    popupDiv.appendChild(contentDiv);
-
-    mainDiv.appendChild(popupDiv);
-    mainDiv.setAttribute("onclick", "cancelPopup()");
+    let contentDivs = document.getElementsByTagName("content");
+    contentDivs[0].appendChild(buildBudgetItem(name, 0));
 }
 
-function showAddExpense(itemName) {
-    let mainDiv    = document.getElementById("mainContent");
-    let popupDiv   = document.createElement("popup");
-    let headerDiv  = document.createElement("header");
-    let titleDiv   = document.createElement("h2");
-    let contentDiv = document.createElement("content");
-    let inputDiv1  = document.createElement("input");
-    let inputDiv2  = document.createElement("input");
-    let buttonDiv  = document.createElement("button");
-    let buttonDiv2 = document.createElement("button");
-
-    titleDiv.innerText  = "Add a New Expense";
-    buttonDiv.innerText = "Add Expense";
-    buttonDiv2.innerText = "Add Expense";
-
-    inputDiv1.setAttribute("type", "text");
-    inputDiv1.setAttribute("id", "description");
-    inputDiv1.setAttribute("placeholder", "Expense Description");
-    inputDiv1.setAttribute("value", "");
-
-    inputDiv2.setAttribute("type", "text");
-    inputDiv2.setAttribute("id", "amount");
-    inputDiv2.setAttribute("placeholder", "Expense Amount");
-
-    buttonDiv.setAttribute("type", "button");
-    buttonDiv.setAttribute("onclick", "submitNewExpense('" + itemName +  "', document.getElementById('amount').value, document.getElementById('description').value)");
-
-    buttonDiv2.setAttribute("style", "visibility: hidden;");
-
-    if(!itemName) {
-        let inputDiv3  = document.createElement("select");
-        let buttonDiv3 = document.createElement("button");
-
-        inputDiv3.setAttribute("name", "itemName");
-        inputDiv3.setAttribute("id", "itemName");
-
-        let myItems;
-
-        try {
-            myItems = getItems();
-        }
-        catch(err) {
-        }
-
-        if(myItems){
-            for (let i = 0; i < myItems.length; i++) {
-                let itemOption = document.createElement("option");
-
-                itemOption.setAttribute("value", myItems[i].name);
-                itemOption.innerText = myItems[i].name;
-
-                inputDiv3.appendChild(itemOption);
-            }
-        }
-
-        buttonDiv3.innerText = "Add Expense";
-        buttonDiv3.setAttribute("style", "visibility: hidden;");
-
-        contentDiv.appendChild(inputDiv3);
-        contentDiv.appendChild(buttonDiv3);
-
-        buttonDiv.setAttribute("onclick", "submitNewExpense(document.getElementById('itemName').value, document.getElementById('amount').value, document.getElementById('description').value)");
-    }
-
-    headerDiv.appendChild(titleDiv);
-    contentDiv.appendChild(inputDiv1);
-    contentDiv.appendChild(buttonDiv2);
-    contentDiv.appendChild(inputDiv2);
-    contentDiv.appendChild(buttonDiv);
-
-    popupDiv.appendChild(headerDiv);
-    popupDiv.appendChild(contentDiv);
-
-    mainDiv.appendChild(popupDiv);
-    mainDiv.setAttribute("onclick", "cancelPopup()");
-}
-
-
+/****************************
+       Popup Functions
+ ****************************/
 function hidePopup() {
     let mainDiv   = document.getElementById("mainContent");
     let popupDivs = document.getElementsByTagName("popup");
@@ -406,16 +258,6 @@ function hidePopup() {
     }
 }
 
-function popupAddItem() {
-    blurChildren("mainContent");
-    showAddItem();
-}
-
-function popupAddExpense(itemName) {
-    blurChildren("mainContent");
-    showAddExpense(itemName);
-}
-
 function cancelPopup() {
     let mainDiv = document.getElementsByTagName("mainContent");
     if (event.srcElement === mainDiv[0] || event.srcElement === mainDiv[0].childNodes[0] ||
@@ -423,34 +265,6 @@ function cancelPopup() {
         hidePopup();
         unBlurChildren("mainContent");
     }
-}
-
-function submitNewItem(name) {
-    hidePopup();
-    addItem(name);
-    unBlurChildren("mainContent");
-
-    let contentDivs = document.getElementsByTagName("content");
-    contentDivs[0].appendChild(buildBudgetItem(name, 0));
-}
-
-function submitNewExpense(name, amount, description) {
-    hidePopup();
-    addExpense(name, amount, description);
-    unBlurChildren("mainContent");
-
-    let today = new Date();
-    let expenseTable = document.getElementsByTagName("expenses");
-    expenseTable[0].appendChild(buildExpenseRow(name, today.toDateString(), amount, description));
-}
-
-function clearMainContent() {
-    let mainDiv = document.getElementById('mainContent');
-
-    let childrenArray = Array.from(mainDiv.childNodes);
-    childrenArray.forEach(function (childDiv) {
-        childDiv.parentNode.removeChild(childDiv);
-    })
 }
 
 function blurChildren(elementID) {
