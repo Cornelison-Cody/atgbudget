@@ -107,7 +107,7 @@ function buildActions() {
 
     actionsDiv.appendChild(buildActionHeader("Income"));
     actionsDiv.appendChild(buildActionItem("View Income", "fa-folder-open", "Income", "viewIncome();"));
-    actionsDiv.appendChild(buildActionItem("Add Income", "fa-money-check", "Income", "addIncome();"));
+    actionsDiv.appendChild(buildActionItem("Add Income", "fa-money-check", "Income", "popupAddIncome();"));
 
     return actionsDiv;
 
@@ -212,6 +212,10 @@ function submitNewExpense(name, amount, description, fromExpense) {
         let expenseTable = document.getElementsByTagName("expenses");
         expenseTable[0].appendChild(buildExpenseRow(name, today.toDateString(), amount, description));
     }
+    else {
+        let item = document.getElementById(name);
+        item.childNodes[1].innerText -= amount;
+    }
 }
 
 /****************************
@@ -241,6 +245,44 @@ function submitNewItem(name) {
 
     let contentDivs = document.getElementsByTagName("content");
     contentDivs[0].appendChild(buildBudgetItem(name, 0));
+}
+
+/****************************
+    Income Functions
+ ****************************/
+function buildIncomeRow(name, date, amount, description) {
+    let rowDiv         = document.createElement("row");
+    let nameDiv        = document.createElement("div");
+    let dateDiv        = document.createElement("div");
+    let amountDiv      = document.createElement("div");
+    let descriptionDiv = document.createElement("div");
+
+    nameDiv.innerText        = name;
+    dateDiv.innerText        = date;
+    amountDiv.innerText      = amount;
+    descriptionDiv.innerText = description;
+
+    rowDiv.appendChild(nameDiv);
+    rowDiv.appendChild(dateDiv);
+    rowDiv.appendChild(amountDiv);
+    rowDiv.appendChild(descriptionDiv);
+
+    return rowDiv;
+}
+
+function submitNewIncome(name, amount, description, fromExpense) {
+    hidePopup();
+    addExpense(name, amount, description);
+    unBlurChildren("mainContent");
+    if (fromExpense) {
+        let today = new Date();
+        let expenseTable = document.getElementsByTagName("expenses");
+        expenseTable[0].appendChild(buildExpenseRow(name, today.toDateString(), amount, description));
+    }
+    else {
+        let item = document.getElementById(name);
+        item.childNodes[1].innerText -= amount;
+    }
 }
 
 /****************************

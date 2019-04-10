@@ -27,6 +27,13 @@ function toggleActionChildren(toggleClass, element) {
     }
 }
 
+function updateRemainingIncome(amount) {
+    let remainingAmount = document.getElementById("incomeRemaining");
+    let currentAmount   = parseInt(remainingAmount.innerText, 10);
+
+    remainingAmount.innerText = currentAmount + amount;
+}
+
 function addExpense(name, amount, description) {
     const xhttp = new XMLHttpRequest();
     xhttp.open("POST", "/budget/items", true);
@@ -50,9 +57,15 @@ function getExpenses() {
 
 function addItem(name) {
     const xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "/budget/items?uid=" + localStorage.getItem("uid") + "&function=addItem&name=" + name + "&amount=" + 0, false);
-    xhttp.send(null);
-    return JSON.parse(xhttp.responseText);
+    xhttp.open("POST", "/budget/items", true);
+    xhttp.setRequestHeader('Content-type', 'application/json');
+    xhttp.send(JSON.stringify({
+        uid: localStorage.getItem("uid"),
+        function: "addItem",
+        name: name,
+        amount: 0
+    }));
+    return xhttp.responseText;
 }
 
 function getItems() {
@@ -62,11 +75,16 @@ function getItems() {
     return JSON.parse(xhttp.responseText);
 }
 
-function addIncome(name, amount) {
+function addIncome(amount, itemArray) {
     const xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "/budget/items?uid=" + localStorage.getItem("uid") + "&function=addIncome&name=" + name + "&amount=" + amount, false);
-    xhttp.send(null);
-    return JSON.parse(xhttp.responseText);
+    xhttp.open("POST", "/budget/items", true);
+    xhttp.send(JSON.stringify({
+        uid: localStorage.getItem("uid"),
+        function: "addIncome",
+        amount: Number(amount),
+        itemArray: itemArray
+    }));
+    return xhttp.responseText;
 }
 
 function getIncome() {
@@ -75,3 +93,4 @@ function getIncome() {
     xhttp.send(null);
     return JSON.parse(xhttp.responseText);
 }
+

@@ -17,21 +17,18 @@ app.get("/", function(req, res) {
 });
 
 app.post("/budget/items", (req, res) => {
-	if(req.query.function === "addItem") {
-		firebaseDB.addItem(req.query.uid, req.query.name, Number(req.query.amount), res);
+	if(req.body.function === "addItem") {
+		firebaseDB.addItem(req.body.uid, req.body.name, req.body.amount, res);
 	}
 	else if (req.body.function === "addExpense") {
-		console.log("In Add Expense");
-		console.log(req.body);
 		firebaseDB.addExpense(req.body.uid, req.body.name, req.body.amount, req.body.description, res);
 	}
-	else if (req.query.function === "addIncome") {
-		firebaseDB.addIncome(req.query.uid, Number(req.query.amount), req.query.itemArray, res);
+	else if (req.body.function === "addIncome") {
+		firebaseDB.addIncome(req.body.uid, req.body.amount, req.body.itemArray, res);
 	}
 	else {
 		console.log(req.query.function);
 	}
-
 });
 
 app.get("/budget/items", (req, res) => {

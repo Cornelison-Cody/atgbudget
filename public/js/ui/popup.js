@@ -120,3 +120,92 @@ function showAddItem() {
     mainDiv.appendChild(popupDiv);
     mainDiv.setAttribute("onclick", "cancelPopup()");
 }
+
+/****************************
+     Income Popups
+ ****************************/
+function popupAddIncome() {
+    blurChildren("mainContent");
+    showAddIncome();
+}
+
+function showAddIncome() {
+    let mainDiv    = document.getElementById("mainContent");
+    let popupDiv   = document.createElement("popup");
+    let headerDiv  = document.createElement("header");
+    let titleDiv   = document.createElement("h2");
+    let contentDiv = document.createElement("content");
+    let totalsDiv  = document.createElement("contentHeader");
+    let itemsDiv   = document.createElement("contentItems");
+    let submitDiv  = document.createElement("contentFooter");
+    let amountDiv  = document.createElement("input");
+    let amount2Div = document.createElement("h3");
+    let buttonDiv  = document.createElement("button");
+
+    titleDiv.innerText  = "Add an Income Batch";
+    buttonDiv.innerText = "Add Income";
+
+    amountDiv.setAttribute("type", "number");
+    amountDiv.setAttribute("id", "amount");
+    amountDiv.setAttribute("placeholder", "Income Amount");
+
+    amount2Div.setAttribute("id", "incomeRemaining");
+    amount2Div.innerText = "0";
+
+    buttonDiv.setAttribute("type", "button");
+
+    let myItems;
+    let itemCount = 0;
+
+    try {
+        myItems = getItems();
+    }
+    catch(err) {
+    }
+
+    if(myItems){
+        for (let i = 0; i < myItems.length; i++) {
+            let itemAmount = document.createElement("input");
+
+            itemAmount.setAttribute("type", "number");
+            itemAmount.setAttribute("id", myItems[i].name + "Income");
+            itemAmount.setAttribute("placeholder", myItems[i].name);
+            itemAmount.setAttribute("onchange", "updateRemainingIncome(-this.value)");
+
+
+            itemsDiv.appendChild(itemAmount);
+            itemCount++;
+        }
+    }
+
+    while (itemCount < 12) {
+
+        let itemAmount = document.createElement("input");
+        itemAmount.classList.add("extraFlexDivs");
+
+        itemsDiv.appendChild(itemAmount);
+        itemCount++;
+    }
+
+    buttonDiv.setAttribute("onclick", "submitNewExpense(document.getElementById('itemName').value, document.getElementById('amount').value, document.getElementById('description').value), true");
+
+
+    totalsDiv.appendChild(amountDiv);
+    totalsDiv.insertAdjacentText("beforeend", "Remaining Amount:");
+    totalsDiv.appendChild(amount2Div);
+
+    submitDiv.appendChild(buttonDiv);
+
+    headerDiv.appendChild(titleDiv);
+
+    contentDiv.appendChild(totalsDiv);
+    contentDiv.appendChild(itemsDiv);
+    contentDiv.appendChild(submitDiv);
+
+    popupDiv.setAttribute("id", "incomePopup");
+    popupDiv.appendChild(headerDiv);
+    popupDiv.appendChild(contentDiv);
+
+    mainDiv.appendChild(popupDiv);
+    mainDiv.setAttribute("onclick", "cancelPopup()");
+}
